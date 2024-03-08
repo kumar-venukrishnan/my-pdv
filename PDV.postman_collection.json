@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "92c9e423-b3a8-428d-9c4c-36f9cab11c49",
+		"name": "PDV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30659716"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "01 Input Username/Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"definition\": {\n        \"username\": \"demo.user8@mailinator.com\",\n        \"password\": \"Welcome888\"\n    },\n    \"module\": \"UsernameAndPassword\"\n}"
+						},
+						"url": {
+							"raw": "https://sandbox-apac-prutraining-1-deployment-thales.dev.onewelcome.io/training/login/api/authenticate",
+							"protocol": "https",
+							"host": [
+								"sandbox-apac-prutraining-1-deployment-thales",
+								"dev",
+								"onewelcome",
+								"io"
+							],
+							"path": [
+								"training",
+								"login",
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 Choose 2FA Options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"authId\", jsonData.authId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"module\": \"TwoFAOptions\",\n    \"definition\": {\n        \"type\": \"EMAIL\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://sandbox-apac-prutraining-1-deployment-thales.dev.onewelcome.io/training/login/api/authenticate",
+							"protocol": "https",
+							"host": [
+								"sandbox-apac-prutraining-1-deployment-thales",
+								"dev",
+								"onewelcome",
+								"io"
+							],
+							"path": [
+								"training",
+								"login",
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 Submit Email OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"accessTokenConsentApi\", jsonData.oauth2Token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"module\": \"TwoFAEmail\",\n    \"definition\": {\n        \"authId\": \"{{authId}}\",\n        \"code\": \"000000\"\n    }\n}"
+						},
+						"url": {
+							"raw": "https://sandbox-apac-prutraining-1-deployment-thales.dev.onewelcome.io/training//login/api/authenticate",
+							"protocol": "https",
+							"host": [
+								"sandbox-apac-prutraining-1-deployment-thales",
+								"dev",
+								"onewelcome",
+								"io"
+							],
+							"path": [
+								"training",
+								"",
+								"login",
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "authId",
+			"value": ""
+		},
+		{
+			"key": "accessTokenConsentApi",
+			"value": ""
+		}
+	]
+}
